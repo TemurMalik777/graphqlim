@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Posts } from "../../post/entities/post.entity";
 
 @ObjectType()
 @Entity()
@@ -32,4 +34,8 @@ export class User {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany((type) => Posts, (post) => post.author)
+  @Field((type) => [Posts])
+  posts: Posts[];
 }

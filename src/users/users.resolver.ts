@@ -1,4 +1,3 @@
-import { Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -9,6 +8,11 @@ import { User } from "./entities/user.entity";
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
+  @Mutation(() => User)
+  createUser(@Args("createUser") createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
+  }
+
   @Query(() => [User])
   findAllUsers() {
     return this.usersService.findAll();
@@ -17,11 +21,6 @@ export class UsersResolver {
   @Query(() => User)
   findOneUser(@Args("id", { type: () => ID }) id: number) {
     return this.usersService.findOne(id);
-  }
-
-  @Mutation(() => User)
-  createUser(@Args("createUser") createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
   }
 
   @Mutation(() => User)
